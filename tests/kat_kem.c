@@ -50,7 +50,7 @@ static OQS_STATUS kem_kat(const char *method_name, bool all) {
 	uint8_t *shared_secret_d = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
-    int max_count;
+	int max_count;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
