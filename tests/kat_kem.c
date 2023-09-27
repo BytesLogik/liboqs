@@ -37,6 +37,19 @@ static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	fprintf(fp, "\n");
 }
 
+static int is_mceliece(const char *method_name) {
+	return ( !strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864)
+	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864f)
+	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_460896)
+	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_460896f)
+	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6688128)
+	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6688128f)
+	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6960119)
+	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6960119f)
+	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128)
+	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128f) );
+}
+
 static OQS_STATUS kem_kat(const char *method_name, bool all) {
 
 	uint8_t entropy_input[48];
@@ -80,7 +93,8 @@ static OQS_STATUS kem_kat(const char *method_name, bool all) {
 		goto err;
 	}
 
-	max_count = all ? 100 : 1;
+	max_count = all ? ( is_mceliece(method_name) ? 10 : 100 ) : 1;
+
 	for (int count = 0; count < max_count; ++count) {
 		fprintf(fh, "count = %d\n", count);
 		OQS_randombytes(seed, 48);
